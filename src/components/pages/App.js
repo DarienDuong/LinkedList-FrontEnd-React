@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
-import Form from './Form'
-import UserList from './UserList'
+import Form from '../organisms/Form'
+import UsersContainer from '../../containers/UsersContainer'
 import {Route, Switch, Link, Redirect} from 'react-router-dom'
 import {Row, Grid} from 'react-bootstrap'
 
@@ -28,7 +28,7 @@ class App extends Component {
 	      		</ul>
       			<Switch>
 					<Route path='/' exact component={Home} />
-					<Route path='/users' exact component={UserList} />
+					<Route path='/users' exact component={UsersContainer} />
 					<Route path='/users/new' exact component={Form} />
 					<Redirect to='/' />
       			</Switch>
