@@ -8,8 +8,8 @@ function mapStateToProps(reduxState) {
   // component will now have
   //  props.users from redux state
   return {
-    users: reduxState.users,
-    loading: reduxState.loading
+    users: reduxState.users.users,
+    loading: reduxState.users.loading
   };
 }
 

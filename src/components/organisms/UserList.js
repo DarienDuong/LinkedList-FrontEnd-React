@@ -1,6 +1,5 @@
 import React, {Component} from 'react'
 import {Row, Grid} from 'react-bootstrap'
-import axios from 'axios'
 
 class UserList extends Component {
 	constructor(props){
@@ -12,11 +11,11 @@ class UserList extends Component {
 	}
 
 	render(){
-		const users=this.props.users.users.map(user => (<h1>{user.firstName} {user.lastName}</h1>))
+		const users=this.props.users.map(user => (<h1>{user.firstName} {user.lastName}</h1>))
 		return (
 			<Grid>
 				<Row>
-					{users}
+					{this.props.loading ? (<h1>Loading</h1>) : (users)}
 				</Row>
 			</Grid>
 		) 	
