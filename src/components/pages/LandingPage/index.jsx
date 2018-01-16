@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
+import {connect} from 'react-redux'
 import styled from 'styled-components';
 import bg from '../../../images/bg.jpg';
+import {loginUser} from '../../../store/actions/actionCreators'
 
 const BackgroundImage = styled.div `
 background-image: linear-gradient(45deg, rgba(52,179,228,0.6) 0%, rgba(0,141,201,0.6) 100%), url(${bg});
@@ -104,7 +106,7 @@ class LandingPage extends Component {
   constructor(props){
     super(props)
     this.state = {
-      username: this.props.username,
+      userName: this.props.username,
       password: this.props.password,
       error: null
     }
@@ -118,8 +120,10 @@ class LandingPage extends Component {
 
   handleSubmit(e){
     e.preventDefault()
-    this.addUser().then(() => 
-      this.props.history.push('/users')
+    this.props.loginUser({
+          'userName': this.state.userName,
+          'password': this.state.password}).then(() => 
+          this.props.history.push('/users')
     ).catch(err => {
       console.log(err)
       this.setState({error: err})
@@ -138,10 +142,10 @@ class LandingPage extends Component {
             <InputGroup>
               <Input
                 type="text"
-                name="username"
-                id='username'
+                name="userName"
+                id='userName'
                 onChange={this.handleChange}
-                value={this.state.username} 
+                value={this.state.userName} 
                 required/>
               <span className="highlight"></span>
               <span className="bar"></span>
@@ -176,4 +180,4 @@ class LandingPage extends Component {
   }
 }
 
-export default LandingPage
+export default connect(null, {loginUser})(LandingPage)

@@ -1,6 +1,6 @@
 import * as t from './constants';
-import { getUsers, login } from '../../services/api';
-
+import { getUsers, login, setAuthorizationToken } from '../../services/api';
+import jwtDecode from 'jwt-decode';
 
 export function fetchUsersRequest() {
 	return function(dispatch){
@@ -25,15 +25,25 @@ export function fetchUsersFail(error) {
 	}
 }
 
-export function loginUser(path){
+export function loginUser(data){
 	return function(dispatch){
-		return login('/users/login')
+		return login(data)
 			.then(result => {
-				const token = result;
+				const token = result.token;
+				console.log(token)
 				localStorage.setItem('jwtToken', token);
-      	setAuthorizationToken(token);
-      	dispatch(setCurrentUser(jwtDecode(token)));
-			})
-			.catch(err => dispatch(fetchUsersFail(err)))
+      			setAuthorizationToken(token);
+      			dispatch(setCurrentUser(jwtDecode(token)))
+      		})
+      		.catch(err => console.log(err))
 	}
 }
+
+export function setCurrentUser(user){
+	return {
+		type: t.SET_CURRENT_USER,
+		user
+	}
+}
+
+

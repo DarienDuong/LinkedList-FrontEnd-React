@@ -1,6 +1,5 @@
 import axios from 'axios';
 import processAJAXError from '../helpers/processAJAXError';
-import jwtDecode from 'jwt-decode';
 import SET_CURRENT_USER from '../store/actions/constants';
 
 
@@ -15,6 +14,14 @@ const api = axios.create({
   timeout: 1000,
   headers: { Accept: 'application/json' }
 });
+
+export function setAuthorizationToken(token) {
+  if (token) {
+    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+  } else {
+    delete axios.defaults.headers.common['Authorization'];
+  }
+}
 
 /**
  * This function wraps an axios instance and makes a post
@@ -46,17 +53,10 @@ export function getUsers(path) {
     });
 }
 
-export function setAuthorizationToken(token) {
-  if (token) {
-    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-  } else {
-    delete axios.defaults.headers.common['Authorization'];
-  }
-}
 
-export function login(path) {
+export function login(data) {
   return api
-    .post(path)
+    .post(`${API_URL}/users/login`, data)
     .then(response => {
       return response.data.data;
     })
