@@ -1,6 +1,11 @@
-import React from 'react';
+import React, { Component } from 'react';
 import styled from 'styled-components';
+import bg from '../../../images/bg.jpg';
 
+const BackgroundImage = styled.div `
+background-image: linear-gradient(45deg, rgba(52,179,228,0.6) 0%, rgba(0,141,201,0.6) 100%), url(${bg});
+height: 100%;
+`
 const Landing = styled.section `
   display: flex;
   align-items: center;
@@ -44,9 +49,6 @@ const Input = styled.input `
   -moz-transition:0.2s ease all; 
   -webkit-transition:0.2s ease all;
 
-  :focus {
-    outline: 2px solid black;
-  }
   :focus ~ label {
     top:-20px;
     font-size:14px;
@@ -98,39 +100,80 @@ const SignUpSpan = styled.span `
   font-weight: 500;
   color: #004471;
 `
-const LandingPage = () => {
-  return (
-    <Landing >
-      <div>
-      <LandingLogo>linked<H1span>list</H1span></LandingLogo>
-      <IntroText>Welcome to LinkedList, where you can totally like, land a sweet developer job or whatever.</IntroText>
-      <div>
-        <form>
-          <InputGroup>
-            <Input type="text" name="username" required/>
-            <span className="highlight"></span>
-            <span className="bar"></span>
-            <Label htmlFor="username">Username</Label>
-          </InputGroup>
+class LandingPage extends Component {
+  constructor(props){
+    super(props)
+    this.state = {
+      username: this.props.username,
+      password: this.props.password,
+      error: null
+    }
+    this.handleChange = this.handleChange.bind(this)
+  	this.handleSubmit = this.handleSubmit.bind(this)
+  }
 
-          <InputGroup>
-            <Input type="password" name="password" required/>
-            <span className="highlight"></span>
-            <span className="bar"></span>
-            <Label htmlFor="password">Password</Label>
-          </InputGroup>
+  handleChange(e){
+  	this.setState({[e.target.name]: e.target.value})
+  }
 
-          <RememberMe>
-            <input type="checkbox"/>
-            <p>Remember Me</p>
-          </RememberMe>
-          <Button type="submit" value="Sign In"/>
-          <FormBlurb>Need an account? <SignUpSpan>Sign Up</SignUpSpan></FormBlurb>
-        </form>
-      </div>
-      </div>
-    </Landing>
-  )
+  handleSubmit(e){
+    e.preventDefault()
+    this.addUser().then(() => 
+      this.props.history.push('/users')
+    ).catch(err => {
+      console.log(err)
+      this.setState({error: err})
+    })
+  }
+
+  render(){
+    return (
+      <BackgroundImage>
+      <Landing >
+        <div>
+        <LandingLogo>linked<H1span>list</H1span></LandingLogo>
+        <IntroText>Welcome to LinkedList, where you can totally like, land a sweet developer job or whatever.</IntroText>
+        <div>
+          <form onSubmit={this.handleSubmit}>
+            <InputGroup>
+              <Input
+                type="text"
+                name="username"
+                id='username'
+                onChange={this.handleChange}
+                value={this.state.username} 
+                required/>
+              <span className="highlight"></span>
+              <span className="bar"></span>
+              <Label htmlFor="username">Username</Label>
+            </InputGroup>
+  
+            <InputGroup>
+              <Input
+                type="password"
+                name="password"
+                id="password"
+                onChange={this.handleChange}
+                value={this.state.password}
+                required/>
+              <span className="highlight"></span>
+              <span className="bar"></span>
+              <Label htmlFor="password">Password</Label>
+            </InputGroup>
+  
+            <RememberMe>
+              <input type="checkbox"/>
+              <p>Remember Me</p>
+            </RememberMe>
+            <Button type="submit" value="Sign In"/>
+            <FormBlurb>Need an account? <SignUpSpan>Sign Up</SignUpSpan></FormBlurb>
+          </form>
+        </div>
+        </div>
+      </Landing>
+      </BackgroundImage>
+    )
+  }
 }
 
 export default LandingPage

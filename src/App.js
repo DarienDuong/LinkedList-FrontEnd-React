@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import './App.css';
 import {LandingPage} from './components';
-//import Form from '../organisms/Form'
-//import UsersContainer from '../../containers/UsersContainer'
+import Form from './components/organisms/Form'
+import UsersContainer from './containers/UsersContainer'
 import {Route, Switch, Link, Redirect} from 'react-router-dom';
 
 
@@ -13,7 +13,22 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-      	<LandingPage />
+      <ul>
+	      			<li>
+	      				<Link to='/'>Home</Link>
+	      			</li>	      		
+	      			<li>
+	      				<Link to='/users'>See Users</Link>
+	      			</li>
+	      			<li>
+	      				<Link to='/users/new'>Add a user</Link>
+	      			</li>
+	      		</ul>
+        <Switch>
+          <Route path='/' exact component={LandingPage} />
+          <Route path='/users' exact component={UsersContainer} />
+          <Route path='/users/new' exact component={Form} />
+        </Switch>
       </div>
     );
   }

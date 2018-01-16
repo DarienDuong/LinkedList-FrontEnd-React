@@ -1,5 +1,9 @@
 import axios from 'axios';
 import processAJAXError from '../helpers/processAJAXError';
+import jwtDecode from 'jwt-decode';
+import SET_CURRENT_USER from '../store/actions/constants';
+
+
 
 const API_URL = process.env.API_URL || 'http://localhost:3001/api';  // express server URI
 
@@ -34,6 +38,25 @@ const api = axios.create({
 export function getUsers(path) {
   return api
     .get(path)
+    .then(response => {
+      return response.data.data;
+    })
+    .catch(error => {
+      return processAJAXError(error);
+    });
+}
+
+export function setAuthorizationToken(token) {
+  if (token) {
+    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+  } else {
+    delete axios.defaults.headers.common['Authorization'];
+  }
+}
+
+export function login(path) {
+  return api
+    .post(path)
     .then(response => {
       return response.data.data;
     })
