@@ -64,3 +64,4 @@ export function login(data) {
       return processAJAXError(error);
     });
 }
+
