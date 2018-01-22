@@ -6,8 +6,14 @@ export function fetchUsersRequest() {
 	return function(dispatch){
 		dispatch({type: t.FETCH_USERS_REQUEST})
 		return getUsers('/users')
-			.then(result => dispatch(fetchUsersSuccess(result)))
-			.catch(err => dispatch(fetchUsersFail(err)))
+			.then(result => {
+        console.log(result)
+        dispatch(fetchUsersSuccess(result))
+      })
+			.catch(err => {
+        console.log(err)
+        dispatch(fetchUsersFail(err))
+      })
 	}
 }
 
